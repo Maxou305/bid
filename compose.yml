@@ -1,0 +1,22 @@
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    ports:
+      - 1000:3306
+    volumes:
+      - ../mysql-data:/var/lib/mysql
+      - ./greendata.sql:/docker-entrypoint-initdb.d/greendata.sql
+    networks:
+      - db
+    environment:
+      MYSQL_DATABASE: greendata
+      MYSQL_ROOT_PASSWORD: test
+    healthcheck:
+      test: [ "CMD-SHELL", "mysqladmin ping -h localhost -u root -ptest || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  db:
