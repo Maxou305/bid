@@ -1,13 +1,34 @@
 <?php
 include 'database.php';
 
-$pdo = new PDO('mysql:host=localhost;dbname=greendata', 'root', 'root');
+//$pdo = new PDO('mysql:host=localhost;dbname=greendata', 'root', 'test');
+$dsn = 'mysql:host=localhost;dbname=greendata';
+$username = 'root';
+$password = 'test';
 
+try {
+    $pdo = new PDO($dsn, $username, $password);
+    // Réglages supplémentaires (par exemple, pour afficher les erreurs)
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die('Connexion échouée : ' . $e->getMessage());
+}
 
-function get_all_bids()
+$limit = 100;
+
+function get_page_count(){
+    global $pdo, $limit;
+    $stmt = $pdo->prepare('SELECT COUNT(*) FROM bid');
+    $stmt->execute();
+    return $stmt->fetchColumn()/$limit;
+}
+
+function get_all_bids($offset)
 {
-    global $pdo;
-    $stmt = $pdo->prepare('SELECT * FROM bid');
+    global $pdo, $limit;
+    $stmt = $pdo->prepare('SELECT * FROM bid LIMIT :limit OFFSET :offset');
+    $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', (int)($offset -1)*$limit, PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetchAll();
 }

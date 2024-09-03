@@ -1,9 +1,10 @@
 <?php
+include 'functions.php';
 
-if (isset ($_POST['username']) && isset($_POST['description'])) {
+if (isset ($_POST['username']) && isset($_POST['bid'])) {
     $data = [
-        'username' => $_POST['name'],
-        'description' => $_POST['description'],
+        'username' => $_POST['username'],
+        'bid' => $_POST['bid'],
         'created_at' => date('Y-m-d H:i:s')
     ];
     $id = create_bid($data);
@@ -11,7 +12,7 @@ if (isset ($_POST['username']) && isset($_POST['description'])) {
     exit;
 }
 
-include 'functions.php';
+
 include 'header.php';
 
 ?>
@@ -23,8 +24,8 @@ include 'header.php';
             <input type="text" name="username" id="username">
         </div>
         <div>
-            <label for="description">Description</label>
-            <textarea name="description" id="description"></textarea>
+            <label for="bid">Description</label>
+            <textarea name="bid" id="bid"></textarea>
         </div>
         <button type="submit">Create</button>
     </form>

@@ -3,10 +3,10 @@ services:
     image: mysql:5.7
     container_name: mysql
     ports:
-      - 1000:3306
+      - 3306:3306
     volumes:
-      - ../mysql-data:/var/lib/mysql
       - ./greendata.sql:/docker-entrypoint-initdb.d/greendata.sql
+      - ./zbid.sql:/docker-entrypoint-initdb.d/zbid.sql
     networks:
       - db
     environment:

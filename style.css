@@ -1,0 +1,32 @@
+body {
+    max-width: 1440px;
+    margin: 0 auto;
+}
+
+button {
+    background-color: blue;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+}
+
+h1 {
+    font-family: "Comic Sans MS";
+    font-size: 300%;
+}
+
+.bid {
+    background-color: #f1f1f1;
+    padding: 20px;
+    margin-bottom: 20px ;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+.date {
+    margin-bottom: 0;
+}

@@ -1,20 +1,18 @@
 <?php
-//include 'functions.php';
-include 'database.php';
+include 'functions.php';
+//include 'database.php';
 include 'header.php';
 $id = $_GET['id'];
-//$item = get_bid($id);
-$item = getBid($id);
+$item = get_bid($id);
+//$item = getBid($id);
 
-function getBid($id)
-{
-    global $list;
-    foreach ($list as $item) {
-        if ($item['id'] == $id) {
-            return $item;
-        }
-    }
-    return null;
+if (isset($_POST['username']) && isset($_POST['message'])) {
+    $data = [
+        'bid_id' => $id,
+        'username' => $_POST['username'],
+        'message' => $_POST['message']
+    ];
+    create_message($data);
 }
 
 if ($item === null) {
@@ -24,7 +22,21 @@ if ($item === null) {
 ?>
     <h1>Annonce n°<?= $item['id'] ?> postée par <?= $item['username'] ?></h1>
     <p><?= $item['bid'] ?></p>
-    <p>Postée le <?= $item['createdAt'] ?></p>
+    <p>Postée le <?= $item['created_at'] ?></p>
+    <h2>Messages</h2>
+    <ul>
+        <?php
+        foreach (get_messages_by_bid($id) as $message) {
+//        foreach (getMessagesByBid($id) as $message) {
+            ?>
+            <li>
+                <strong><?= $message['username'] ?></strong>
+                <p><?= $message['message'] ?></p>
+            </li>
+            <?php
+        }
+        ?>
+    </ul>
     <h2>Répondre à l'annonce</h2>
     <form method="post">
         <div>
@@ -36,7 +48,8 @@ if ($item === null) {
             <textarea name="message" id="message"></textarea>
         </div>
         <button type="submit">Envoyer</button>
-
+    </form>
+    <a href="homepage.php">Retour à l'accueil</a>
 <?php
 include 'footer.php';
 ?>
