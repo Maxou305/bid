@@ -6,6 +6,10 @@ $actualPage = $_GET['page'] ?? 1;
 $items = get_all_bids($actualPage);
 $pages = get_page_count();
 
+if (isset($_POST['search'])) {
+    $items = search_bid($_POST['search'], $actualPage);
+}
+
 //$items = [
 //    [
 //        'id' => 1,
@@ -33,19 +37,26 @@ $pages = get_page_count();
 //    ],
 //];
 ?>
-<h1>Les annonces dans ta région</h1>
-<div>
-<a href="new_bid_form.php">
-    <button>Poster une annonce</button>
-</a>
-</div>
+    <h1>Les annonces dans ta région</h1>
+    <div>
+        <a href="new_bid_form.php">
+            <button>Poster une annonce</button>
+        </a>
+        <form method="post">
+        <div>
+            <label for="search">Search</label>
+            <input type="search" name="search" id="search">
+        </div>
+        <button type="submit">Rechercher</button>
+        </form>
+    </div>
 <?php
-    for ($i = 1; $i <= $pages; $i++) {
+for ($i = 1; $i <= $pages + 1; $i++) {
     ?>
     <a href="homepage.php?page=<?= $i ?>">
         <button><?= $i ?></button>
     </a>
-<?php
+    <?php
 }
 foreach ($items as $item) : ?>
     <div class="bid">
@@ -57,7 +68,7 @@ foreach ($items as $item) : ?>
         <p class="date">Postée le <?= $item['created_at'] ?></p>
     </div>
 <?php endforeach;
-for ($i = 1; $i <= $pages; $i++) {
+for ($i = 1; $i <= $pages + 1; $i++) {
     ?>
     <a href="homepage.php?page=<?= $i ?>">
         <button><?= $i ?></button>

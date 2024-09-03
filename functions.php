@@ -16,11 +16,12 @@ try {
 
 $limit = 100;
 
-function get_page_count(){
+function get_page_count()
+{
     global $pdo, $limit;
     $stmt = $pdo->prepare('SELECT COUNT(*) FROM bid');
     $stmt->execute();
-    return $stmt->fetchColumn()/$limit;
+    return $stmt->fetchColumn() / $limit;
 }
 
 function get_all_bids($offset)
@@ -28,7 +29,7 @@ function get_all_bids($offset)
     global $pdo, $limit;
     $stmt = $pdo->prepare('SELECT * FROM bid LIMIT :limit OFFSET :offset');
     $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
-    $stmt->bindValue(':offset', (int)($offset -1)*$limit, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', (int)($offset - 1) * $limit, PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetchAll();
 }
@@ -39,6 +40,18 @@ function get_bid($id)
     $stmt = $pdo->prepare('SELECT * FROM bid WHERE id = :id');
     $stmt->execute(['id' => $id]);
     return $stmt->fetch();
+}
+
+function search_bid($search, $offset)
+{
+    global $pdo;
+    global $limit;
+    $stmt = $pdo->prepare('SELECT * FROM bid WHERE bid LIKE :search LIMIT :limit OFFSET :offset');
+    $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', (int)($offset - 1) * $limit, PDO::PARAM_INT);
+    $stmt->bindValue(':search', '%' . $search . '%');
+    $stmt->execute();
+    return $stmt->fetchAll();
 }
 
 function create_bid($data)
